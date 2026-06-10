@@ -1,0 +1,9 @@
+- tsy misy dependance spring le projet 
+- fahazaina manao decomposition ana projet 
+- manana branche principale : main - rehefa anao sprint 0 de micree branche : - apina objectif principale anle s0 
+                            - -> clone -> push ao am s0 -> pull request (hita daoly le modification atao , manao code review )
+                            - fafana le branche avy ampiasaina 
+- manambotra servlet : front controller servlet 
+- ao anatnio misy doGet sy doPost tonga de maintso anle processRequest , print : out(Url ) , terena andalo amnio servlet io daoly leizy 
+- xml : servlet mapping , declarer ao le chemin anle framework , urlParam 
+- 
