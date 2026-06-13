@@ -1,0 +1,9 @@
+- ## ================ 14/06/26 ================================== 
+- verifier si le servlet marche : - tomcat [ok]
+- bien comprendre la notion de servlet et pull request [ok]
+- comprendre le concept de controller [ok]
+- comprendre le comment [ok]
+- comprendre le comment de l'annotation [ok]
+- compiler le framework pour que la creation des annotations soit mis a jour [ok]
+- recopier le .jar dans l'application [ok]
+- cree une classe dans l'application pour verifier si l'annotation controller marche [ok]
