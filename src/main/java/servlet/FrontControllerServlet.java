@@ -24,6 +24,7 @@ public class FrontControllerServlet extends HttpServlet {
             out.println("</body></html>");
         }
     }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
