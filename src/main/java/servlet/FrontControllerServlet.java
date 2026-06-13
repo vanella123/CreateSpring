@@ -23,7 +23,7 @@ public class FrontControllerServlet extends HttpServlet {
             out.println("<p>Tu as demandé l'URL : <strong>" + requestURI + "</strong></p>");
             out.println("</body></html>");
         }
-    } 
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -36,5 +36,5 @@ public class FrontControllerServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-}
+} 
     
