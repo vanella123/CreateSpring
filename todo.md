@@ -7,3 +7,9 @@
 - compiler le framework pour que la creation des annotations soit mis a jour [ok]
 - recopier le .jar dans l'application [ok]
 - cree une classe dans l'application pour verifier si l'annotation controller marche [ok]
+- cree une fonction init dans FrontController, 
+-  lire le fichier .xml retourne le nom du package de controller 
+- fonction pour mettre , injecter les controllers dans la liste dans FrontController 
+- dans le fichier .xml on cree une variable pour mettre le nom du package du controller 
+- methode pour verifier si une annotation existe 
+- bouclena le liste de on regarde l'annotation controller existe 
