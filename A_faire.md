@@ -23,7 +23,7 @@ Ao anaty application de test afaka micree controller de anotena am controller at
 Mianatra manao anle annotation , aona raha icree anotation 
 tenenina le annotation oe aiza avy no azo anapina anazy , inona daoly variable azo apetraka ao anatinle anotation , atao ao anaty application de test 
 Micreer classe ray anotena amle classe avy creena , 
-## ================= 16/06/26 =================================
+## ================= 16/06/26 ================================= SPRINT 1 
 - cree classe anotation : cree classe controller framework [ok]
 - test : creer classe controller [ok]
 - but : fatatrle framewrok oe reto avy le controller [ok]
@@ -34,4 +34,14 @@ Micreer classe ray anotena amle classe avy creena ,
       - tsara indrindra : omena le pakcgae anle controller (par configuration ) mamaky anle classe web.xml , de jerena oe iza avy no manao annotation anty test , web.xml : manisy variable , valeur le package misy anle controller anle app test
       - class utilitaire : methode : misy ve ty annotation ty sa tsisy , omeo le package , mitady anle classe retraretra 
       - micree classe listener declarena ao anaty .xml anle client , mimplimente listener 
-      - 
+## ==================== 19/06/26 ==============================   SPRINT 2 
+tanjona anana url : iza controller sy methode associer amniny controller iny 
+annotation azo apetraka am methode @urlMapping : mila variable io annotation io 
+- Partie test  : Class EmpController , [
+          - @UrlMapping("/emp/list")
+          - Liste 
+          - rehefa hita oe ty annoter controller de aveo jerena daoly ny methode ny de jerena raha misy anotation anle am url ve leizy 
+          - /emp/new : le controller -> ty le methode 
+          - aiko le url sa tsy aiko rehefa tsy ay de mi trhows , de affichena oe tsy fantatro io fa reto iany ny fantatro 
+- ]
+  

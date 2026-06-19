@@ -7,58 +7,71 @@ import java.lang.reflect.*;
 import java.util.*;
 import annotation.Controller;
 import annotation.GetMapping;
-
+import utils.Utils;
 @WebServlet("/")
 public class FrontControllerServlet extends HttpServlet {
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
+    private List<String> listClass;
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        // Initialiser la liste des classes annotées par @Controller
+        Utils utils = new Utils(getServletContext());
+        listClass = utils.getListClass(Controller.class);
+        System.out.println("Liste des classes annotées par @Controller : " + listClass);
+    }
+   protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException  {
-        try{
+        try {
             response.setContentType("text/html;charset=UTF-8");
-        
-            // 1. On récupère l'URL tapée par l'utilisateur
             String requestURI = request.getServletPath();
-            
-            // 2. On l'affiche dans la console du serveur (pour le développeur)
             System.out.println("URL Interceptée : " + requestURI);
-            
-            // // 3. On l'affiche sur la page web (pour tester)
-            // try (PrintWriter out = response.getWriter()) {
-            //     out.println("<html><body>");
-            //     out.println("<h1>Mon Framework Spring Maison 🚀</h1>");
-            //     out.println("<p>Tu as demandé l'URL : <strong>" + requestURI + "</strong></p>");
-            //     out.println("</body></html>");
-            // }
 
-            // Logique : 
-            // Charger la classe du contrôleur correspondant à l'URL
-            Class<?> clazz = Class.forName("controller.TestController");
-            // verifier si l'annotion @Controller est présente sur la classe
-            if (clazz.isAnnotationPresent(annotation.Controller.class)) {
+            boolean routeTrouvee = false;
+
+            // On parcourt la liste des classes trouvées dynamiquement au lieu de tricher avec "TestController"
+            for (String className : listClass) {
+                Class<?> clazz = Class.forName(className);
+                
+                // Pas besoin de vérifier @Controller ici car listClass ne contient que ça
                 Method[] methods = clazz.getDeclaredMethods();
                 for (Method method : methods) {
+                    
                     if (method.isAnnotationPresent(annotation.GetMapping.class)) {
                         annotation.GetMapping getMapping = method.getAnnotation(annotation.GetMapping.class);
-                        String mappingValue = getMapping.value();
-                        if (mappingValue.equals(requestURI)) {
-                            // Appeler la méthode du contrôleur
+                        
+                        if (getMapping.value().equals(requestURI)) {
+                            routeTrouvee = true;
+                            
+                            // Invocation dynamique du contrôleur
                             Object controllerInstance = clazz.getDeclaredConstructor().newInstance();
                             String result = (String) method.invoke(controllerInstance);
-                            // Afficher le résultat dans la réponse HTTP
+                            
+                            // Écriture de la réponse
                             try (PrintWriter out = response.getWriter()) {
-                                out.println("<html><body>");
-                                out.println("<h1>Mon Framework Spring Maison 🚀</h1>") ;
-                                out.println("<p>Résultat : " + result + "</p>");
-                                out.println("</body></html>");
+                                // out.println("<html><body>");
+                                // out.println("<h1>Mon Framework Spring Maison 🚀</h1>") ;
+                                // out.println("<p>Résultat de l'action : <strong>" + result + "</strong></p>");
+                                out.println("<h3>Liste des contrôleurs enregistrés :</h3><ul>");
+                                for(String c : listClass){
+                                    out.println("<li>" + c + "</li>");
+                                }
+                                out.println("</ul></body></html>");
                             }
+                            return; // On a trouvé et traité la route, on arrête la méthode ici !
                         }
                     }
                 }
-            }  
+            }
+
+            // Si on arrive ici, c'est qu'aucune classe/méthode ne correspond à l'URL demandée
+            if (!routeTrouvee) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Erreur 404 : Aucun contrôleur trouvé pour l'URL " + requestURI);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Une erreur est survenue : " + e.getMessage());
         }
- 
     }
     
     @Override
