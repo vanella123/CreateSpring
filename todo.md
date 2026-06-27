@@ -13,3 +13,12 @@
 - dans le fichier .xml on cree une variable pour mettre le nom du package du controller [ok]
 - methode pour verifier si une annotation existe [ok]
 - bouclena le liste de on regarde l'annotation controller existe [ok]
+
+
+## ================= 23/06/26 ============================
+- mamorona annotation oe urlMapping [ok]
+- urlMapping : pour les methodes [ok]
+- Test : cree class EmpController et au dessus apina urlMapping 
+- utils : - on prend tout les classes avec les annotation controller (methode 1) [ok]
+          - on prend tout les methodes qui se trouve dans ce classe (si annoter par url alors methode ) 
+          - on regarde leur urlMapping si il y en a qui correspond a celle taper si oui on prend ce methode et on fait : url : controller -> nom de la methode sinon on prend tout les url et tout les controller de ces url -> les methode de ces controller 

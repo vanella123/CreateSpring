@@ -25,7 +25,7 @@ tenenina le annotation oe aiza avy no azo anapina anazy , inona daoly variable a
 Micreer classe ray anotena amle classe avy creena , 
 ## ================= 16/06/26 ================================= SPRINT 1 
 - cree classe anotation : cree classe controller framework [ok]
-- test : creer classe controller [ok]
+- test : creer classe controller [ok] 
 - but : fatatrle framewrok oe reto avy le controller [ok]
 - bout de code : mandro anle code rehetra anaaty class excuter lors du demmarage ny anle app executer soit premier appel anle frontservlet ( implementation listenr : au demmarage de executer le code ) [init] 
 - Code : - mila fantatra daoly le controller rehetra 
@@ -43,5 +43,11 @@ annotation azo apetraka am methode @urlMapping : mila variable io annotation io
           - rehefa hita oe ty annoter controller de aveo jerena daoly ny methode ny de jerena raha misy anotation anle am url ve leizy 
           - /emp/new : le controller -> ty le methode 
           - aiko le url sa tsy aiko rehefa tsy ay de mi trhows , de affichena oe tsy fantatro io fa reto iany ny fantatro 
-- ]
-  
+- ] 
+## ==================== 23/06/26 =========================== APPROCHE : SPRINT 2 
+- apres revu de code : -> 
+- manaz
+## sprint 3  : 
+- TestController : url /test 
+- micree classe ray vaova o de : 
+  ## sprint 3 bis : 
