@@ -1,23 +1,21 @@
 package utils;
-import java.io.InputStream;
-import java.util.Set;
-
-import javax.print.Doc;
-
+import annotation.GetMapping;
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.File;
-import javax.xml.parsers.*;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Element;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
-import jakarta.servlet.*;
-import jakarta.servlet.annotation.*;
-import annotation.*;
-import java.util.List;
-import java.util.ArrayList;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 public class Utils {
     private ServletContext servletContext;
 
@@ -78,4 +76,58 @@ public class Utils {
         }
         return listClass;
     }
+    public List<String> getListMethod(List<String> listeClasse, String requestURI) {
+        boolean routeTrouvee = false; 
+        List<String> response = new ArrayList<>();
+        response.add("RequestURI : " + requestURI); 
+        
+        try {
+            for (String className : listeClasse) {
+                Class<?> clazz = Class.forName(className);
+                
+                if (clazz.isAnnotationPresent(annotation.Controller.class)) {
+                    Method[] methods = clazz.getDeclaredMethods();
+                    
+                    for (Method method : methods) { 
+                        if (method.isAnnotationPresent(annotation.GetMapping.class)) {
+                            annotation.GetMapping getMapping = method.getAnnotation(annotation.GetMapping.class);
+                            
+                            // Si l'URL correspond exactement
+                            if (getMapping.value().equals(requestURI)) {
+                                routeTrouvee = true;
+                                response.add("URL : " + requestURI + " | CONTROLLER : " + className + " | METHODE : " + method.getName());
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // 🌟 Si AUCUNE route n'a correspondu, on refait un tour pour tout afficher
+            if (!routeTrouvee) {
+                response.add("❌ Erreur 404 : Aucune méthode ne correspond à l'URL " + requestURI);
+                response.add("Voici la liste des routes disponibles dans l'application : ");
+                
+                for (String className : listeClasse) {
+                    Class<?> clazz = Class.forName(className);
+                    if (clazz.isAnnotationPresent(annotation.Controller.class)) {
+                        for (Method method : clazz.getDeclaredMethods()) {
+                            if (method.isAnnotationPresent(annotation.GetMapping.class)) {
+                                annotation.GetMapping getMapping = method.getAnnotation(annotation.GetMapping.class);
+                                response.add("👉 URL : " + getMapping.value() + " | CONTROLLER : " + className + " | METHODE : " + method.getName());
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return response;
+            
+        } catch (Exception e) {
+            e.printStackTrace();  
+            return null; 
+        }     
+    }
+    // public void CheckUrlCorrespondant(String urlTaper){
+
+    // }
 } 
