@@ -51,3 +51,16 @@ annotation azo apetraka am methode @urlMapping : mila variable io annotation io
 - TestController : url /test 
 - micree classe ray vaova o de : 
   ## sprint 3 bis : 
+## ==================== 30/06/26 ========================== sprint 3 
+- ajouter : fonction nom du methode (get na post ) dans urlMapping 
+- creer une classe UrlMappingMethod : methode (le fonction ) , class misy anazy 
+- UrlMethod : attribut url et method (predefinir la fonction equals )
+- Controller: Map<UrlMethod, UrlMappingMethod>
+
+
+
+## sprint 4 : 
+- tsy tokony initialiser mintsy le code 
+- listener : on deplace les codes dans init dans un listener , on cree un listener , si le listener leve une exception alors l'application n'est meme pas demarrer , et on aura une erreur dans log 
+- init minitisaliser anle map 
+- stuck et hip 

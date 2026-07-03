@@ -14,11 +14,28 @@
 - methode pour verifier si une annotation existe [ok]
 - bouclena le liste de on regarde l'annotation controller existe [ok]
 
-
 ## ================= 23/06/26 ============================
 - mamorona annotation oe urlMapping [ok]
 - urlMapping : pour les methodes [ok]
-- Test : cree class EmpController et au dessus apina urlMapping 
+- Test : cree class EmpController et au dessus apina urlMapping [ok]
 - utils : - on prend tout les classes avec les annotation controller (methode 1) [ok]
           - on prend tout les methodes qui se trouve dans ce classe (si annoter par url alors methode ) 
           - on regarde leur urlMapping si il y en a qui correspond a celle taper si oui on prend ce methode et on fait : url : controller -> nom de la methode sinon on prend tout les url et tout les controller de ces url -> les methode de ces controller 
+## ================ 30/06/26 ========================== sprint 3 
+Goal : specifite de get ou post / executer la methode 
+- changer nom de la class GetMapping -> UrlMapping [ok]
+- ajouter une mthode de type string method : (c'est soit get , soit post)[ok]
+- creer une classe UrlMethodMapping [ok]: - nom de la classe ou se trouve le methode 
+                                      - le Method methode c'est la methode 
+- creer classe UrlMethod [ok] : - url et methode 
+                           - predefinition de equals (comparer url et methode ) : exemple samy /accueil et samy /post -> exception ca devrait pas marcher 
+- Tester :[ok] - Get juste taper l'url sur le navigateur 
+           - post creer formulaire
+           - any antnle framework apina url roa mitovy de tokony mamoka exception 
+           - cree UrlMethodMapping dans front avec deux url 
+- FrontController : - creer une Mapping de UrlMethodMapping et UrlMethod -> invoke la methode mais faut pas que samy /accueil et samy /post [ok]
+## ================= 01/07/26 ============================ sprint 3 bis 
+Goal : invoquer le methode 
+    - ce qu'on a : Mapping qui contient comme cle : - urlMethod (url , method ) - UrlMethodMapping  (class , method )
+    - scanner les packages qui ont une annotation controller et urlMapping 
+    - et on prend la methode et on fait invoke cette fonction 
