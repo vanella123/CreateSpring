@@ -39,3 +39,7 @@ Goal : invoquer le methode
     - ce qu'on a : Mapping qui contient comme cle : - urlMethod (url , method ) - UrlMethodMapping  (class , method )
     - scanner les packages qui ont une annotation controller et urlMapping 
     - et on prend la methode et on fait invoke cette fonction 
+
+
+Oui oui , faut arranger ca 
+En fait en ce moment j'ai du mal à me concentrer alors j'éloigne mon téléphone pour pas trop procrastiner, c'est pour ça que ela ela za vo mamaly et que je te réponds entre-temps 
