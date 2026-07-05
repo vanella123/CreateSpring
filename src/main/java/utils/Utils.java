@@ -1,5 +1,5 @@
 package utils;
-import annotation.GetMapping;
+import annotation.UrlMapping;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -89,11 +89,11 @@ public class Utils {
                     Method[] methods = clazz.getDeclaredMethods();
                     
                     for (Method method : methods) { 
-                        if (method.isAnnotationPresent(annotation.GetMapping.class)) {
-                            annotation.GetMapping getMapping = method.getAnnotation(annotation.GetMapping.class);
+                        if (method.isAnnotationPresent(annotation.UrlMapping.class)) {
+                            annotation.UrlMapping getMapping = method.getAnnotation(annotation.UrlMapping.class);
                             
                             // Si l'URL correspond exactement
-                            if (getMapping.value().equals(requestURI)) {
+                            if (getMapping.url().equals(requestURI)) {
                                 routeTrouvee = true;
                                 response.add("URL : " + requestURI + " | CONTROLLER : " + className + " | METHODE : " + method.getName());
                             }
@@ -111,9 +111,9 @@ public class Utils {
                     Class<?> clazz = Class.forName(className);
                     if (clazz.isAnnotationPresent(annotation.Controller.class)) {
                         for (Method method : clazz.getDeclaredMethods()) {
-                            if (method.isAnnotationPresent(annotation.GetMapping.class)) {
-                                annotation.GetMapping getMapping = method.getAnnotation(annotation.GetMapping.class);
-                                response.add("👉 URL : " + getMapping.value() + " | CONTROLLER : " + className + " | METHODE : " + method.getName());
+                            if (method.isAnnotationPresent(annotation.UrlMapping.class)) {
+                                annotation.UrlMapping getMapping = method.getAnnotation(annotation.UrlMapping.class);
+                                response.add("👉 URL : " + getMapping.url() + " | CONTROLLER : " + className + " | METHODE : " + method.getName());
                             }
                         }
                     }
