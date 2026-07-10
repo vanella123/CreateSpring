@@ -6,7 +6,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -126,12 +128,34 @@ public class Utils {
             e.printStackTrace();  
             return null; 
         }     
-    }
+    } 
     // public void CheckUrlCorrespondant(String urlTaper){
 
     // }
-    public void invokeFunction(String url ){
-        // chercher le controller qui possede ce 
-    }
+
+    public Map<UrlMethod, UrlMethodMapping> mappingMethodUrl(Class<?> annotationController) throws Exception {
+        Map<UrlMethod, UrlMethodMapping> mapping = new HashMap<>();
+        String namePackage = getNamePackage("/WEB-INF/web.xml");
+        Reflections reflections = new Reflections(namePackage);
+        // 2. Extraire toutes les classes annotées par @MaSuperAnnotation
+        Set<Class<?>> classes = reflections.get(Scanners.TypesAnnotated.with(annotationController).asClass());
+        for (Class<?> cls : classes) {
+            Method[] methods = cls.getDeclaredMethods();
+            for (Method method : methods) {
+                if (method.isAnnotationPresent(annotation.UrlMapping.class)) {
+                    UrlMethodMapping urlmethodmapping = new UrlMethodMapping(cls, method) ; 
+                    String url = method.getAnnotation(annotation.UrlMapping.class).url();
+                    String methodType = method.getAnnotation(annotation.UrlMapping.class).method();
+                    UrlMethod urlmethod = new UrlMethod(url , methodType) ;
+                    if(mapping.containsKey(urlmethod)){
+                        throw new Exception("Erreur de routage : L'URL [" + url + "] avec la méthode [" + methodType + "] est déjà associée à un autre contrôleur !");
+                    } else{
+                        mapping.put(urlmethod, urlmethodmapping); 
+                    }
+                }
+            }
+        } 
+        return mapping ; 
+    } 
 } 
 // au lieu de parcourir tout la liste des controller qui va occuper beaucoup de memoire vaut mieux 

@@ -11,19 +11,20 @@ import utils.Utils;
 
 @WebServlet("/")
 public class FrontControllerServlet extends HttpServlet {
-    private List<String> listClass;
-
+   // private List<String> listClass;
+    private Map<UrlMethod, UrlMethodMapping> mapping = new HashMap<>();
     @Override
     public void init() throws ServletException {
         try {
             super.init();
             Utils utils = new Utils(getServletContext());
-            listClass = utils.getListClass(Controller.class);
-            System.out.println("Liste des classes annotées par @Controller : " + listClass);
+          //  listClass = utils.getListClass(Controller.class);
+            //System.out.println("Liste des classes annotées par @Controller : " + listClass);
+            mapping = utils.mappingMethodUrl(Controller.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    } 
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException  {
@@ -31,28 +32,19 @@ public class FrontControllerServlet extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             String requestURI = request.getServletPath();
             System.out.println("URL Interceptée : " + requestURI);
-
-            UrlMethod url1 = new UrlMethod("/test", "GET");
-            UrlMethod url2 = new UrlMethod("/test", "GET"); // C'est le doublon !
-
-            UrlMethodMapping um1 = new UrlMethodMapping(getClass(), null);
-            Map<UrlMethod, UrlMethodMapping> mapping = new HashMap<>();
-            mapping.put(url1, um1);
+            if (mapping.containsKey(new UrlMethod(requestURI, request.getMethod()))) {
+                UrlMethodMapping urlMethodMapping = mapping.get(new UrlMethod(requestURI, request.getMethod()));
+                Object controllerInstance = urlMethodMapping.getControllerClass().getDeclaredConstructor().newInstance();
+                Object result = urlMethodMapping.getMethod().invoke(controllerInstance);
+                try (PrintWriter out = response.getWriter()) {
+                    out.println(result);
+                }
+            } else { 
+                // Si aucune route ne correspond, on renvoie une erreur 404
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Erreur 404 : Aucune méthode ne correspond à l'URL " + requestURI);
+            } 
             
-            System.out.println("Vérification du doublon en cours...");
-            // On teste si le deuxième déclenche la détection
-            if (mapping.containsKey(url2)) {
-                System.out.println(" Doublon détecté avec succès dans la console !");
-                throw new IllegalArgumentException(" Erreur Framework : L'URL '" + url2.getUrl() + "' en mode " + url2.getMethod() + " est déjà enregistrée !");
-            } else {
-                mapping.put(url2, um1);
-            }
-            
-            // Si par malheur ça ne plante pas, on écrit un message de secours
-            try (PrintWriter out = response.getWriter()) {
-                out.println("<html><body>Tout est OK (l'exception n'a pas fonctionné)</body></html>");
-            }
-
+         
         } catch (Exception e) {
             // TRÈS IMPORTANT : On affiche l'erreur dans la console Tomcat
             System.err.println("Exception interceptée dans le FrontController : " + e.getMessage());

@@ -3,7 +3,12 @@ import java.lang.reflect.Method;
 public class UrlMethodMapping {
     private Class<?> controllerClass;
     private Method method;
-
+    private Class<?>[] parameterTypes;
+    public UrlMethodMapping(Class<?> controllerClass, Method method , Class<?>[] parameterTypes) {
+        this.controllerClass = controllerClass;
+        this.method = method;
+        this.parameterTypes = parameterTypes;
+    }
     public UrlMethodMapping(Class<?> controllerClass, Method method) {
         this.controllerClass = controllerClass;
         this.method = method;
@@ -16,5 +21,17 @@ public class UrlMethodMapping {
         return method;
     }
 
-    
+    public Class<?>[] getParameterTypes() {
+        return parameterTypes;
+    }
+
+    public void setControllerClass(Class<?> controllerClass) {
+        this.controllerClass = controllerClass;
+    }
+    public void setMethod(Method method) {
+        this.method = method;
+    }
+    public void setParameterTypes(Class<?>[] parameterTypes) {
+        this.parameterTypes = parameterTypes;
+    }
 }
