@@ -6,4 +6,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME) // Visible à l'exécution
 public @interface Controller {
     // Une annotation peut être vide, elle sert juste de badge !
-}
+} 

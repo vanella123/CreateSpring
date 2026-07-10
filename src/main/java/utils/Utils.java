@@ -130,4 +130,8 @@ public class Utils {
     // public void CheckUrlCorrespondant(String urlTaper){
 
     // }
+    public void invokeFunction(String url ){
+        // chercher le controller qui possede ce 
+    }
 } 
+// au lieu de parcourir tout la liste des controller qui va occuper beaucoup de memoire vaut mieux 
