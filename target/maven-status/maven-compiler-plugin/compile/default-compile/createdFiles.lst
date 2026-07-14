@@ -3,5 +3,6 @@ utils/UrlMethod.class
 utils/UrlMethodMapping.class
 listener/FrameworkContextListener.class
 annotation/UrlMapping.class
+entity/ModelAndView.class
 annotation/Controller.class
 servlet/FrontControllerServlet.class

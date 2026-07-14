@@ -48,4 +48,7 @@ Goal : invoquer le methode
 Oui oui , faut arranger ca 
 En fait en ce moment j'ai du mal à me concentrer alors j'éloigne mon téléphone pour pas trop procrastiner, c'est pour ça que ela ela za vo mamaly et que je te réponds entre-temps 
 - ## ============== 14/07/26 =============================== sprint 5 
-- comprendre la notion de ModelAndView 
+- comprendre la notion de ModelAndView [ok]
+- Creer une classe ModelAndView [ok]: - Map (String (cle) , Object (valeur ))
+                                  - nom view 
+- Creer une ViewResolver pour trouver le suffix et ou se trouve le view ??
