@@ -16,5 +16,14 @@ public class UrlMethodMapping {
         return method;
     }
 
+    public void setController(Class<?> controllerClass) {
+        this.controllerClass = controllerClass;
+    }
+    public void setMethod(Method method) {
+        this.method = method;
+    }
+    public UrlMethodMapping() {
+    }
+
     
 }

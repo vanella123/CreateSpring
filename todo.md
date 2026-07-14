@@ -47,3 +47,5 @@ Goal : invoquer le methode
 
 Oui oui , faut arranger ca 
 En fait en ce moment j'ai du mal à me concentrer alors j'éloigne mon téléphone pour pas trop procrastiner, c'est pour ça que ela ela za vo mamaly et que je te réponds entre-temps 
+- ## ============== 14/07/26 =============================== sprint 5 
+- comprendre la notion de ModelAndView 

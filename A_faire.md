@@ -64,7 +64,9 @@ annotation azo apetraka am methode @urlMapping : mila variable io annotation io
 - listener : on deplace les codes dans init dans un listener , on cree un listener , si le listener leve une exception alors l'application n'est meme pas demarrer , et on aura une erreur dans log 
 - init minitisaliser anle map 
 - stuck et hip 
-
+## ============================ 14/07/26 ============================
+## SPRINT 5 : 
 ## ============================= model and view =================
-- manao class model and view 
-- 
+- manao fonction miliste zavatra 
+- ModelAndView 
+  

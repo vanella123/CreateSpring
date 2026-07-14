@@ -1,21 +1,15 @@
 package utils;
+
 import annotation.UrlMapping;
 import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+
 public class Utils {
     private ServletContext servletContext;
 
@@ -23,59 +17,26 @@ public class Utils {
         this.servletContext = servletContext;
     }
 
-    public String getNamePackage(String path) {
-        try {
-            String namePackage = null;
-    // lis les flux d'octet du fichier web.xml
-            String file = servletContext.getRealPath(path);
-            /* cree une variable en xml 
-                <configuration>
-                    <mon-parametre>ma_valeur</mon-parametre>
-                </configuration>
-            */
-            // 
-            if(file !=null){
-                File f = new File(file);
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                Document doc = builder.parse(f);
-
-                // Step 3: Normalize the XML structure (Recommended)
-                doc.getDocumentElement().normalize();
-
-                // Step 4: Get all elements with the tag name "mon-parametre"
-                NodeList ParamList = doc.getElementsByTagName("configuration");
-                for (int i = 0; i < ParamList.getLength(); i++) {
-                    Node node = ParamList.item(i);
-                    // Ensure the node is an Element node (ignores whitespaces and comments)
-                    if (node.getNodeType() == Node.ELEMENT_NODE) {
-                        Element element = (Element) node;
-                        // Step 5: Get the value of the "mon-parametre" element
-                        namePackage = element.getElementsByTagName("mon-parametre").item(0).getTextContent();
-                    }
-                }
-            }
-            return namePackage;
-        } catch (Exception e) {
-            e.printStackTrace();
+    // Retourne la liste des classes (Class<?>) directement pour faciliter la réflexion
+    public List<Class<?>> getListClass(Class<?> annotationController) {
+        List<Class<?>> listClass = new ArrayList<>();
+        
+        // Récupération dynamique du package grâce au paramètre d'initialisation global !
+        String namePackage = servletContext.getInitParameter("package.controller");
+        
+        if (namePackage == null || namePackage.trim().isEmpty()) {
+            throw new RuntimeException("Le paramètre 'package.controller' n'est pas configuré dans le web.xml !");
         }
-        return null; 
-    } 
-    // public void getListController(){
-
-    // }
-    public List<String> getListClass(Class<?> annotationController){
-        List<String> listClass = new ArrayList<>();
-        // 1. Initialiser le scanner sur le package cible
-        String namePackage = getNamePackage("/WEB-INF/web.xml");
+        
         Reflections reflections = new Reflections(namePackage);
-        // 2. Extraire toutes les classes annotées par @MaSuperAnnotation
         Set<Class<?>> classes = reflections.get(Scanners.TypesAnnotated.with(annotationController).asClass());
+        
         for (Class<?> cls : classes) {
-            listClass.add(cls.getName());
+            listClass.add(cls);
         }
         return listClass;
     }
+
     public List<String> getListMethod(List<String> listeClasse, String requestURI) {
         boolean routeTrouvee = false; 
         List<String> response = new ArrayList<>();
@@ -92,7 +53,6 @@ public class Utils {
                         if (method.isAnnotationPresent(annotation.UrlMapping.class)) {
                             annotation.UrlMapping getMapping = method.getAnnotation(annotation.UrlMapping.class);
                             
-                            // Si l'URL correspond exactement
                             if (getMapping.url().equals(requestURI)) {
                                 routeTrouvee = true;
                                 response.add("URL : " + requestURI + " | CONTROLLER : " + className + " | METHODE : " + method.getName());
@@ -102,7 +62,6 @@ public class Utils {
                 }
             }
             
-            // 🌟 Si AUCUNE route n'a correspondu, on refait un tour pour tout afficher
             if (!routeTrouvee) {
                 response.add("❌ Erreur 404 : Aucune méthode ne correspond à l'URL " + requestURI);
                 response.add("Voici la liste des routes disponibles dans l'application : ");
@@ -119,19 +78,44 @@ public class Utils {
                     }
                 }
             }
-            
             return response;
-            
         } catch (Exception e) {
             e.printStackTrace();  
             return null; 
         }     
     }
-    // public void CheckUrlCorrespondant(String urlTaper){
 
-    // }
-    public void invokeFunction(String url ){
-        // chercher le controller qui possede ce 
+    // 🚀 La méthode buildRoutingTable adaptée !
+    // Elle n'est plus statique pour pouvoir utiliser 'getListClass' et est 100% compatible avec tes objets
+    public void buildRoutingTable(Map<UrlMethod, UrlMethodMapping> routes, Class<?> annotationController) {
+        
+        // 1. On récupère directement les classes de contrôleurs
+        List<Class<?>> controllers = getListClass(annotationController);
+
+        for (Class<?> controller : controllers) {
+            // getDeclaredMethods() évite de récupérer les méthodes héritées d'Object (comme getClass, hashCode, etc.)
+            for (Method method : controller.getDeclaredMethods()) {
+
+                if (!method.isAnnotationPresent(UrlMapping.class)) {
+                    continue;
+                }
+
+                String url = method.getAnnotation(UrlMapping.class).url();
+                String httpMethod = method.getAnnotation(UrlMapping.class).method().toUpperCase();
+
+                UrlMethod urlMethod = new UrlMethod(url, httpMethod);
+
+                // Instanciation de ton mapping en lui passant la classe et la méthode dans le constructeur !
+                UrlMethodMapping mapping = new UrlMethodMapping(controller, method);
+
+                // Gestion des doublons de route
+                if (routes.containsKey(urlMethod)) {
+                    throw new RuntimeException(
+                            "Erreur de routage : Route dupliquée détectée -> " + url + " [" + httpMethod + "]");
+                }
+
+                routes.put(urlMethod, mapping);
+            }
+        }
     }
-} 
-// au lieu de parcourir tout la liste des controller qui va occuper beaucoup de memoire vaut mieux 
+}
