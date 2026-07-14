@@ -18,7 +18,7 @@ public class FrontControllerServlet extends HttpServlet {
     public void init() throws ServletException {
         mapping = (Map<UrlMethod, UrlMethodMapping>) getServletContext().getAttribute("routes");
     }
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException {
         try {
@@ -89,7 +89,7 @@ public class FrontControllerServlet extends HttpServlet {
                 out.println("</body>");
                 out.println("</html>");
             }
-
+        
         } catch (Exception e) {
             System.err.println("Exception interceptée dans le FrontController : " + e.getMessage());
             e.printStackTrace();  

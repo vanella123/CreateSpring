@@ -41,8 +41,8 @@ Goal : invoquer le methode
     - et on prend la methode et on fait invoke cette fonction 
 
 - ## ============ 10/07/26 =============================== sprint 3 bis 
-        - dans init on scanne toute les classes du projet 
-        - on regarde tout ce qui a une annotation controlleur 
+        - dans init on scanne toute les classes du projet [ok]
+        - on regarde tout ce qui a une annotation controlleur [ok]
         - on cree une instance de cette controller : on regarde lequel des methodes a l'interieur correspond a notre url : on creer une installe de cette methode et on l'invoke 
 
 Oui oui , faut arranger ca 

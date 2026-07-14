@@ -4,6 +4,7 @@ import annotation.UrlMapping;
 import jakarta.servlet.ServletContext;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -117,5 +118,32 @@ public class Utils {
                 routes.put(urlMethod, mapping);
             }
         }
+
     }
+     public Map<UrlMethod, UrlMethodMapping> mappingMethodUrl(Class<?> annotationController) throws Exception {
+        Map<UrlMethod, UrlMethodMapping> mapping = new HashMap<>();
+        String namePackage = servletContext.getInitParameter("package.controller");
+        Reflections reflections = new Reflections(namePackage);
+        // 2. Extraire toutes les classes annotées par @MaSuperAnnotation
+        Set<Class<?>> classes = reflections.get(Scanners.TypesAnnotated.with(annotationController).asClass());
+        for (Class<?> cls : classes) {
+            Method[] methods = cls.getDeclaredMethods();
+            for (Method method : methods) {
+                if (method.isAnnotationPresent(annotation.UrlMapping.class)) {
+                    UrlMethodMapping urlmethodmapping = new UrlMethodMapping(cls, method) ; 
+                    String url = method.getAnnotation(annotation.UrlMapping.class).url();
+                    String methodType = method.getAnnotation(annotation.UrlMapping.class).method();
+                    UrlMethod urlmethod = new UrlMethod(url , methodType) ;
+                    if(mapping.containsKey(urlmethod)){
+                        throw new Exception("Erreur de routage : L'URL [" + url + "] avec la méthode [" + methodType + "] est déjà associée à un autre contrôleur !");
+                    } else{
+                        mapping.put(urlmethod, urlmethodmapping); 
+                    }
+                }
+            }
+        } 
+        return mapping ; 
+    } 
+
 }
+
