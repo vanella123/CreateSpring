@@ -38,5 +38,5 @@ public class ModelAndView {
 
     public void setModel(Map<String, Object> model) {
         this.model = model;
-    }
+    } 
 } 
