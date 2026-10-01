@@ -70,3 +70,5 @@ annotation azo apetraka am methode @urlMapping : mila variable io annotation io
 - manao fonction miliste zavatra 
 - ModelAndView 
   
+
+init
