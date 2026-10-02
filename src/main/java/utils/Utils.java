@@ -72,7 +72,7 @@ public class Utils {
             }
             
             if (!routeTrouvee) {
-                response.add("❌ Erreur 404 : Aucune méthode ne correspond à l'URL " + requestURI);
+                response.add("Erreur 404 : Aucune méthode ne correspond à l'URL " + requestURI);
                 response.add("Voici la liste des routes disponibles dans l'application : ");
                 
                 for (String className : listeClasse) {
@@ -81,7 +81,7 @@ public class Utils {
                         for (Method method : clazz.getDeclaredMethods()) {
                             if (method.isAnnotationPresent(annotation.UrlMapping.class)) {
                                 annotation.UrlMapping getMapping = method.getAnnotation(annotation.UrlMapping.class);
-                                response.add("👉 URL : " + getMapping.url() + " | CONTROLLER : " + className + " | METHODE : " + method.getName());
+                                response.add("URL : " + getMapping.url() + " | CONTROLLER : " + className + " | METHODE : " + method.getName());
                             }
                         }
                     }
