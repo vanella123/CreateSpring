@@ -1,29 +1,25 @@
+
 package entity; // ou ton package de modèles/utilitaires, ex: mg.itu.model
 
 import java.util.HashMap;
 import java.util.Map;
 import utils.* ; 
-public class ModelAndView {
-    private String view; // Le nom ou le chemin de la vue (ex: "profil.jsp")
-    private Map<String, Object> model; // Les données à envoyer à la vue
 
-    // Constructeur vide (par défaut)
+public class ModelAndView {
+    private String view;
+    private Map<String, Object> model = new HashMap<>();
+
+    // Constructeur vide
     public ModelAndView() {
-        this.model = new HashMap<>();
     }
 
-    // Constructeur pratique pour définir directement la vue
+    // Constructeur pratique passant directement le nom de la vue
     public ModelAndView(String view) {
         this.view = view;
-        this.model = new HashMap<>();
     }
 
-    // Permet d'ajouter une donnée au modèle facilement (méthode chaînable)
-    public void addObject(String key, Object value) {
-        this.model.put(key, value);
-    }
+    // --- GETTERS et SETTERS ---
 
-    // Getters et Setters
     public String getView() {
         return view;
     }
@@ -39,4 +35,20 @@ public class ModelAndView {
     public void setModel(Map<String, Object> model) {
         this.model = model;
     }
+     /**
+     * Ajoute une donnée au modèle qui sera transmise à la vue (JSP).
+     *
+     * @param attributeName  
+     * @param attributeValue
+     */
+    public void addObject(String attributeName, Object attributeValue) {
+        if (this.model == null) {
+            this.model = new HashMap<>();
+        }
+        this.model.put(attributeName, attributeValue);
+    }
+
 } 
+
+   
+

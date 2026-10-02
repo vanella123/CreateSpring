@@ -1,8 +1,13 @@
 /home/vaa/S4/WEB DYNAMIQUE/CreateSpring/src/main/java/annotation/UrlMapping.java
 /home/vaa/S4/WEB DYNAMIQUE/CreateSpring/src/main/java/annotation/Controller.java
 /home/vaa/S4/WEB DYNAMIQUE/CreateSpring/src/main/java/entity/ModelAndView.java
+<<<<<<< HEAD
+=======
+/home/vaa/S4/WEB DYNAMIQUE/CreateSpring/src/main/java/annotation/ApiRest.java
+>>>>>>> sprint6
 /home/vaa/S4/WEB DYNAMIQUE/CreateSpring/src/main/java/utils/UrlMethodMapping.java
 /home/vaa/S4/WEB DYNAMIQUE/CreateSpring/src/main/java/servlet/FrontControllerServlet.java
 /home/vaa/S4/WEB DYNAMIQUE/CreateSpring/src/main/java/listener/FrameworkContextListener.java
+/home/vaa/S4/WEB DYNAMIQUE/CreateSpring/src/main/java/utils/APIrestMethod.java
 /home/vaa/S4/WEB DYNAMIQUE/CreateSpring/src/main/java/utils/UrlMethod.java
 /home/vaa/S4/WEB DYNAMIQUE/CreateSpring/src/main/java/utils/Utils.java

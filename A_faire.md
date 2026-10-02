@@ -70,9 +70,9 @@ annotation azo apetraka am methode @urlMapping : mila variable io annotation io
 - manao fonction miliste zavatra 
 - ModelAndView 
   
-
 ## sprint 7 
 - Banding : donnee tonga avy an am view alefa any am controller 
 - formulaire : bouton enregistrer - url mapper avec une methode / methode save -> raha ohatra employe le atsy de tokony mandray argument employe 
               - jerena oe misy parametre ve le methode de eo izy manao matching : getParameter , fatany ny anarany le valeur tonga ao amle requete 
                                                                                   - tsy objet lo le parametre , jerena ao amle  
+=======
