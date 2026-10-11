@@ -185,7 +185,7 @@ public class Utils {
         return routeMapping.getMethod().invoke(controllerInstance, methodArguments);
     }
 
-    public Object[] resolveArguments(Method method, HttpServletRequest request, HttpServletResponse response) {
+    public Object[] resolveArguments(Method method, HttpServletRequest request, HttpServletResponse response) throws Exception {
         java.lang.reflect.Parameter[] parameters = method.getParameters();
         Object[] arguments = new Object[parameters.length];
         
@@ -197,14 +197,14 @@ public class Utils {
                 arguments[i] = request;
             } else if (paramType == HttpServletResponse.class) {
                 arguments[i] = response;
-            } else {
-                String paramName = parameter.getName(); // Nom de la variable Java
+            } else if (isSimpleType(paramType)) {
+                // C'est un type simple (String, Integer, int, boolean, etc.)
+                String paramName = parameter.getName();
                 String paramValue = request.getParameter(paramName);
-                
-                // Log propre via le Logger Java
-                logger.info("--> DEBUG PARAMETRE : Nom Java détecté = [" + paramName + "] | Valeur HTTP reçue = [" + paramValue + "]");
-                
                 arguments[i] = convertType(paramValue, paramType);
+            } else {
+                // C'est un objet complexe (ex: Employe) ! On l'hydrate via les setters.
+                arguments[i] = bindComplexObject(paramType, request);
             }
         }
         return arguments;
@@ -259,6 +259,16 @@ public class Utils {
         }
         
         return instance;
+    }
+
+    private boolean isSimpleType(Class<?> type) {
+    return type.isPrimitive() ||
+           type == String.class ||
+           type == Integer.class ||
+           type == Long.class ||
+           type == Double.class ||
+           type == Boolean.class ||
+           type == Float.class;
     }
     
     public void handleResult(Object result, HttpServletRequest request, HttpServletResponse response) 
