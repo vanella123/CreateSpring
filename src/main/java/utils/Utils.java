@@ -1,11 +1,9 @@
 package utils;
-
 import annotation.UrlMapping;
 import entity.ModelAndView;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
@@ -16,10 +14,10 @@ import java.util.Map;
 import java.util.Set;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
-
+import java.util.logging.Logger;
 public class Utils {
     private ServletContext servletContext;
-
+    private static final Logger logger = Logger.getLogger(Utils.class.getName());
     public Utils(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
@@ -127,7 +125,7 @@ public class Utils {
             }
         }
 
-    }
+    } 
      public Map<UrlMethod, UrlMethodMapping> mappingMethodUrl(Class<?> annotationController) throws Exception {
         Map<UrlMethod, UrlMethodMapping> mapping = new HashMap<>();
         String namePackage = servletContext.getInitParameter("package.controller");
@@ -188,21 +186,81 @@ public class Utils {
     }
 
     public Object[] resolveArguments(Method method, HttpServletRequest request, HttpServletResponse response) {
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        Object[] arguments = new Object[parameterTypes.length];
+        java.lang.reflect.Parameter[] parameters = method.getParameters();
+        Object[] arguments = new Object[parameters.length];
         
-        for (int i = 0; i < parameterTypes.length; i++) {
-            if (parameterTypes[i] == HttpServletRequest.class) {
+        for (int i = 0; i < parameters.length; i++) {
+            java.lang.reflect.Parameter parameter = parameters[i];
+            Class<?> paramType = parameter.getType();
+            
+            if (paramType == HttpServletRequest.class) {
                 arguments[i] = request;
-            } else if (parameterTypes[i] == HttpServletResponse.class) {
+            } else if (paramType == HttpServletResponse.class) {
                 arguments[i] = response;
             } else {
-                arguments[i] = null; // Paramètre non pris en charge pour le moment
+                String paramName = parameter.getName(); // Nom de la variable Java
+                String paramValue = request.getParameter(paramName);
+                
+                // Log propre via le Logger Java
+                logger.info("--> DEBUG PARAMETRE : Nom Java détecté = [" + paramName + "] | Valeur HTTP reçue = [" + paramValue + "]");
+                
+                arguments[i] = convertType(paramValue, paramType);
             }
         }
         return arguments;
     }
 
+// Méthode utilitaire pour convertir les paramètres HTTP (String) dans les types Java courants
+    private Object convertType(String value, Class<?> targetType) {
+        if (value == null) {
+            // Retourne la valeur par défaut si le paramètre est absent
+            if (targetType.isPrimitive()) {
+                if (targetType == int.class) return 0;
+                if (targetType == long.class) return 0L;
+                if (targetType == double.class) return 0.0;
+                if (targetType == boolean.class) return false;
+            }
+            return null;
+        }
+
+        if (targetType == String.class) {
+            return value;
+        } else if (targetType == int.class || targetType == Integer.class) {
+            return Integer.parseInt(value);
+        } else if (targetType == long.class || targetType == Long.class) {
+            return Long.parseLong(value);
+        } else if (targetType == double.class || targetType == Double.class) {
+            return Double.parseDouble(value);
+        } else if (targetType == boolean.class || targetType == Boolean.class) {
+            return Boolean.parseBoolean(value);
+        }
+
+        return value;
+    }
+    private Object bindComplexObject(Class<?> clazz, HttpServletRequest request) throws Exception {
+        // 1. Instancier l'objet vide (ex: new Employe())
+        Object instance = clazz.getDeclaredConstructor().newInstance();
+        
+        // 2. Parcourir tous les champs de la classe
+        java.lang.reflect.Field[] fields = clazz.getDeclaredFields();
+        for (java.lang.reflect.Field field : fields) {
+            field.setAccessible(true); 
+            String fieldName = field.getName(); 
+            
+            String paramValue = request.getParameter(fieldName);
+            
+            if (paramValue != null) {
+                Object convertedValue = convertType(paramValue, field.getType());
+                
+                field.set(instance, convertedValue);
+                
+
+            }
+        }
+        
+        return instance;
+    }
+    
     public void handleResult(Object result, HttpServletRequest request, HttpServletResponse response) 
             throws Exception {
         
@@ -218,7 +276,7 @@ public class Utils {
             request.getRequestDispatcher(viewPath).forward(request, response);
             
         } else if (result instanceof String) {
-            // Affichage direct du texte
+            // Affichage direct du texteutils
             try (PrintWriter out = response.getWriter()) {
                 out.println(result);
             }

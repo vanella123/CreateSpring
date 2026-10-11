@@ -13,15 +13,17 @@ import utils.UrlMethod;
 import utils.UrlMethodMapping;
 import utils.Utils; 
 import com.fasterxml.jackson.databind.ObjectMapper; 
-
 @WebServlet("/")
 public class FrontControllerServlet extends HttpServlet {
     private List<String> listClass;
     private Map<UrlMethod, UrlMethodMapping> mapping;
     private Utils utils;
+
     @Override
     @SuppressWarnings("unchecked")
     public void init() throws ServletException {
+       // console.log("FrontControllerServlet initialized.");
+        System.out.println("FrontControllerServlet initialized") ; 
         utils = new Utils(getServletContext());
         mapping = (Map<UrlMethod, UrlMethodMapping>) getServletContext().getAttribute("routes");
     }
@@ -44,7 +46,7 @@ public class FrontControllerServlet extends HttpServlet {
                 Object result = utils.executeController(routeMapping, request, response);
                 
                 // Étape B : Traiter et afficher le résultat
-                utils.handleResult(result, request, response);
+              //  utils.handleResult(result, request, response);
                 boolean isRestMethod = routeMapping.getMethod().isAnnotationPresent(ApiRest.class);
                 if (isRestMethod) {
                     response.setContentType("application/json;charset=UTF-8");
