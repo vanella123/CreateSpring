@@ -57,8 +57,6 @@ annotation azo apetraka am methode @urlMapping : mila variable io annotation io
 - UrlMethod : attribut url et method (predefinir la fonction equals )
 - Controller: Map<UrlMethod, UrlMappingMethod>
 
-
-
 ## sprint 4 : 
 - tsy tokony initialiser mintsy le code 
 - listener : on deplace les codes dans init dans un listener , on cree un listener , si le listener leve une exception alors l'application n'est meme pas demarrer , et on aura une erreur dans log 
@@ -69,4 +67,10 @@ annotation azo apetraka am methode @urlMapping : mila variable io annotation io
 ## ============================= model and view =================
 - manao fonction miliste zavatra 
 - ModelAndView 
-  
+
+## sprint 7 
+- Banding : donnee tonga avy an am view alefa any am controller 
+- formulaire : bouton enregistrer - url mapper avec une methode / methode save -> raha ohatra employe le atsy de tokony mandray argument employe 
+              - jerena oe misy parametre ve le methode de eo izy manao matching : getParameter , fatany ny anarany le valeur tonga ao amle requete 
+                                                                                  - tsy objet lo le parametre , jerena ao amle  
+=======
